@@ -1,3 +1,31 @@
+<?php
+
+$dataFile = 'bbs.dat';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
+  isset($_POST['message']) &&
+  isset($_POST['user'])) {
+
+  $message = trim($_POST['message']);
+  $user = trim($_POST['user']);
+
+
+  if ($message !== '') {
+
+    $user = ($user === '') ? 'ななしさん' : $user;
+
+    $newData = $message . "\t" . $user . "\n";
+
+    $fp = fopen($dataFile, 'a');
+    fwrite($fp, $newData);
+    fclose($fp);
+  }
+
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -8,7 +36,7 @@
 </head>
 <body>
   <h1>簡易掲示板</h1>
-  <form class="" action="index.html" method="post">
+  <form action="" method="post">
     message : <input type="text" name="message">
     user : <input type="text" name="user">
     <input type="submit" value="投稿">
