@@ -8,6 +8,7 @@ $dataFile = 'bbs.dat';
 
 // CSRF対策
 
+
 session_start();
 
 function setToken() {
