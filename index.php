@@ -2,6 +2,22 @@
 
 $dataFile = 'bbs.dat';
 
+// CSRF対策
+
+session_start();
+
+function setToken() {
+  $token = sha1(uniqid(mt_rand(), true));
+  $_SESSION['token']  = $token;
+}
+
+function checkToken() {
+  if (empty($_SESSION['token']) || ($_SESSION['token']) != $_POST['token']) {
+    echo "不正なPOSTが行われました。";
+    exit;
+  }
+}
+
 function h($s) {
   return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
 }
@@ -9,6 +25,8 @@ function h($s) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
   isset($_POST['message']) &&
   isset($_POST['user'])) {
+
+  checkToken();
 
   $message = trim($_POST['message']);
   $user = trim($_POST['user']);
@@ -33,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
     header('Location:' . 'index.php', true, 303);
 
   }
+} else {
+  setToken();
 }
 
 $posts  = file($dataFile, FILE_IGNORE_NEW_LINES);
@@ -58,6 +78,7 @@ $posts = array_reverse($posts);
     message : <input type="text" name="message">
     user : <input type="text" name="user">
     <input type="submit" value="投稿">
+    <input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
   </form>
   <h2>投稿一覧 (<?php echo count($posts) ?>件) </h2>
   <ul>
