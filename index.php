@@ -87,13 +87,14 @@ $posts = array_reverse($posts);
   </form>
   <h2>投稿一覧 (<?php echo count($posts) ?>件) </h2>
   <ul>
-    <?php if (count($posts)) : ?>
+    <?php if (isset($posts)) : ?>
       <?php foreach ($posts as $post) : ?>
         <?php list($message, $user, $postedAt) = explode("\t", $post); ?>
           <li><?php echo h($message); ?> (<?php echo h($user); ?>) - <?php echo h($postedAt); ?></li>
       <?php endforeach; ?>
-    <?php else : ?>
-    <li>まだ投稿はありません。</li>
+        <?php if(!count($posts)) : ?>
+          <li>まだ投稿はありません。</li>
+        <?php endif; ?>
     <?php endif; ?>
   </ul>
 </body>
