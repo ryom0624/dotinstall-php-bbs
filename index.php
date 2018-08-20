@@ -1,5 +1,9 @@
 <?php
 
+if (!file_exists('bbs.dat')) {
+  touch('bbs.dat');
+}
+
 $dataFile = 'bbs.dat';
 
 // CSRF対策
