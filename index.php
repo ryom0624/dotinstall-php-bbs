@@ -30,6 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 
     fclose($fp);
 
+    header('Location:' . 'index.php', true, 303);
+
   }
 }
 
