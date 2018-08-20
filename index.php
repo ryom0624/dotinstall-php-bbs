@@ -14,7 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' &&
 
     $user = ($user === '') ? 'ななしさん' : $user;
 
-    $newData = $message . "\t" . $user . "\n";
+    $message = str_replace("\t", ' ', $message);
+    $user = str_replace("\t", ' ', $user);
+
+    $postedAt = date('Y-m-d H:i:s');
+
+    $newData = $message . "\t" . $user . "\t" . $postedAt . "\n";
 
     $fp = fopen($dataFile, 'a');
     fwrite($fp, $newData);
