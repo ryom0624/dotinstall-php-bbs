@@ -2,6 +2,10 @@
 
 if (!file_exists('bbs.dat')) {
   touch('bbs.dat');
+  if(!file_exists('bbs.dat')) {
+    echo 'bbs.datファイルが作成できませんでした。';
+    die();
+  }
 }
 
 $dataFile = 'bbs.dat';
@@ -87,14 +91,13 @@ $posts = array_reverse($posts);
   </form>
   <h2>投稿一覧 (<?php echo count($posts) ?>件) </h2>
   <ul>
-    <?php if (isset($posts)) : ?>
+    <?php if (isset($posts) && is_array($posts) && count($posts) > 0) : ?>
       <?php foreach ($posts as $post) : ?>
         <?php list($message, $user, $postedAt) = explode("\t", $post); ?>
           <li><?php echo h($message); ?> (<?php echo h($user); ?>) - <?php echo h($postedAt); ?></li>
       <?php endforeach; ?>
-        <?php if(!count($posts)) : ?>
-          <li>まだ投稿はありません。</li>
-        <?php endif; ?>
+    <?php else: ?>
+      <li>まだ投稿はありません。</li>
     <?php endif; ?>
   </ul>
 </body>
